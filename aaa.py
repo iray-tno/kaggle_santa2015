@@ -17,7 +17,7 @@ cu.execute("ALTER TABLE gifts ADD COLUMN 'TripId' INT;")
 cu.execute("ALTER TABLE gifts ADD COLUMN 'i' INT;")
 cu.execute("ALTER TABLE gifts ADD COLUMN 'j' INT;")
 c.commit()
-grp=99
+grp=97
 
 i_ = 0
 j_ = 0
@@ -29,14 +29,14 @@ for i in range(90,-90,int(-180/n)):
     for j in range(180,-180,int(-360/n)):
         j_ += 1
         cu = c.cursor()
-        cu.execute("UPDATE gifts SET i=" + str(i_) + ", j=" + str(j_) + " WHERE ((Latitude BETWEEN " + str(i - (180/n)) + " AND  " + str(i) + ") AND (Longitude BETWEEN " + str(j - (360/n)) + " AND  " + str(j) + "));")
+        cu.execute("UPDATE gifts SET i="+str(i_)+", j="+str(j_)+" WHERE ((Latitude BETWEEN "+str(i-(180/n))+" AND  "+str(i)+") AND (Longitude BETWEEN "+str(j-(360/n))+" AND  "+str(j)+"));")
         c.commit()
 
 
     
 
 
-trips = pd.read_sql("SELECT * FROM (SELECT * FROM gifts WHERE TripId IS NULL ORDER BY j DESC, Longitude ASC, Latitude ASC LIMIT " + str(grp) + ") ORDER BY Latitude DESC",c)
+trips = pd.read_sql("SELECT * FROM (SELECT * FROM gifts WHERE TripId IS NULL ORDER BY j DESC, Longitude ASC, Latitude ASC LIMIT "+str(grp)+") ORDER BY Latitude DESC",c)
 while len(trips.GiftId)>0:
     g = []
     t_ += 1
@@ -65,7 +65,7 @@ while len(trips.GiftId)>0:
 submission = pd.read_sql("SELECT GiftId, TripId FROM gifts ORDER BY TripId ASC, Latitude DESC;",c)
 submission.to_csv("submission.csv", index=False)
 print("cost:",f_)
-mx<-12634797376.2
+mx=12634797376.2
 if f_ <mx:
     print("Improvement", f_, f_-mx, mx)
 else:
